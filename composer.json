@@ -1,0 +1,12 @@
+{
+    "autoload": {
+        "name": "Uzduotis",
+        "description": "Pokes",
+        "psr-4": {
+            "sonaro\\": "app"
+        }
+    },
+    "require": {
+        "phpmailer/phpmailer": "^6.5"
+    }
+}

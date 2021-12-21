@@ -10,6 +10,7 @@ use PHPMailer\PHPMailer\Exception;
 class Tasks
 {
     protected $pdo;
+    private $search;
     private $id;
     private $name;
     private $lastName;
@@ -103,11 +104,13 @@ class Tasks
 
     //------------------------------------------------------------- USER LIST ---------------------------------------------------------
 
-    public function users()
+    public function users($offset, $itemsPerPage)
     {
         try {
-            $query = "SELECT id, name, last_name, email, pokes FROM sonaro.users";
+            $query = "SELECT id, name, last_name, email, pokes FROM sonaro.users LIMIT :offset, :perPage";
             $stmt = $this->pdo->prepare($query);
+            $stmt->bindParam(':offset', $offset, PDO::PARAM_INT);
+            $stmt->bindParam(':perPage', $itemsPerPage, PDO::PARAM_INT);
             $stmt->execute();
             return $stmt->fetchAll(PDO::FETCH_ASSOC);
         } catch (PDOException $msg) {
@@ -211,7 +214,8 @@ class Tasks
         return $this->info;
     }
 
-    public function sender($id) {
+    public function sender($id)
+    {
         try {
             $query = "SELECT id, name FROM sonaro.users WHERE id = :id";
             $stmt = $this->pdo->prepare($query);
@@ -276,5 +280,61 @@ class Tasks
         // $headers .= 'From: ' . $sender['email'] . "\r\n";
 
         // mail($to, $subject, $message, $headers);
+    }
+
+    //------------------------------------------------------------- SEARCH ---------------------------------------------------------
+
+    public function search($search, $offset, $itemsPerPage)
+    {
+        $this->search = htmlspecialchars(strip_tags($search['search'] . '%'));
+        return $this->searchExec($offset, $itemsPerPage);
+    }
+
+    private function searchExec($offset, $itemsPerPage)
+    {
+        try {
+            $query = "SELECT id, name, last_name, email, pokes FROM sonaro.users WHERE name LIKE :search LIMIT :offset, :perPage";
+            $stmt = $this->pdo->prepare($query);
+            $stmt->bindParam(':search', $this->search, PDO::PARAM_STR);
+            $stmt->bindParam(':offset', $offset, PDO::PARAM_INT);
+            $stmt->bindParam(':perPage', $itemsPerPage, PDO::PARAM_INT);
+            $stmt->execute();
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        } catch (PDOException $msg) {
+            throw $msg;
+        }
+    }
+
+    //------------------------------------------------------------- PAGINATION ---------------------------------------------------------
+
+    public function rowCount()
+    {
+        try {
+            $query = "SELECT COUNT(*) FROM sonaro.users";
+            $stmt = $this->pdo->prepare($query);
+            $stmt->execute();
+            return $stmt->fetch(PDO::FETCH_ASSOC);
+        } catch (PDOException $msg) {
+            throw $msg;
+        }
+    }
+
+    public function rowCountSearch($post)
+    {
+        $this->search = htmlspecialchars(strip_tags($post['search'] . '%'));
+        return $this->rowCountSearchExec();
+    }
+
+    private function rowCountSearchExec()
+    {
+        try {
+            $query = "SELECT COUNT(*) FROM sonaro.users WHERE name LIKE :search";
+            $stmt = $this->pdo->prepare($query);
+            $stmt->bindParam(':search', $this->search, PDO::PARAM_STR);
+            $stmt->execute();
+            return $stmt->fetch(PDO::FETCH_ASSOC);
+        } catch (PDOException $msg) {
+            throw $msg;
+        }
     }
 }

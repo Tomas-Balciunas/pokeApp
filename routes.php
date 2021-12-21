@@ -8,5 +8,6 @@ $router->define([
     '/profile/update' => 'controllers/update-profile.php',
     '/user' => 'controllers/user-data.php',
     '/user_list' => 'controllers/user-list.php',
-    '/poke' => 'controllers/poke.php'
+    '/poke' => 'controllers/poke.php',
+    '/user_search' => 'controllers/user-search.php'
 ]);

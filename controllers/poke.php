@@ -12,7 +12,7 @@ if (isset($_SESSION['user_id']) && !empty($_POST)) {
     if ($id == $_POST['id']) {
         $info = 'You cannot poke yourself!';
         echo json_encode($info);
-    } elseif (isset($_SESSION['time']) && $_SESSION['time'] + 3 >= time()) {
+    } elseif (isset($_SESSION['time']) && $_SESSION['time'] + 30 >= time()) {
         $info = 'You can only poke once every 30 seconds!';
         echo json_encode($info);
     } else {

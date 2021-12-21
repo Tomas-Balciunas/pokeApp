@@ -5,10 +5,10 @@ use sonaro\Tasks;
 
 header("Content-Type:application/json");
 
-if (isset($_SESSION['user_id'], $_POST['page'])) {
+if (isset($_SESSION['user_id'], $_POST['search'], $_POST['page'])) {
     $connection = DB::connect();
     $task = new Tasks($connection);
-    $rowsRes = $task->rowCount();
+    $rowsRes = $task->rowCountSearch($_POST);
     $rows = $rowsRes['COUNT(*)'];
     $data = [];
     $itemsPerPage = 10;
@@ -23,9 +23,8 @@ if (isset($_SESSION['user_id'], $_POST['page'])) {
     $offset = ($currentPage - 1) * $itemsPerPage;
     $data['pages']['all'] = $pages;
     $data['pages']['current'] = $currentPage;
-    $data['users'] = $task->users($offset, $itemsPerPage);
+    $data['users'] = $users = $task->search($_POST, $offset, $itemsPerPage);
     echo json_encode($data);
-
 } else {
     header('Location:/sonaro');
 }

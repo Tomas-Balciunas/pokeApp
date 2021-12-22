@@ -1,0 +1,107 @@
+@charset "UTF-8";
+
+// Color
+@import "components/color-variables";
+@import "components/color-classes";
+
+// Variables;
+@import "components/variables";
+
+// Reset
+@import "components/normalize";
+
+// components
+@import "components/global";
+@import "components/badges";
+@import "components/icons-material-design";
+@import "components/grid";
+@import "components/navbar";
+@import "components/typography";
+@import "components/transitions";
+@import "components/cards";
+@import "components/toast";
+@import "components/tabs";
+@import "components/tooltip";
+@import "components/buttons";
+@import "components/dropdown";
+@import "components/waves";
+@import "components/modal";
+@import "components/collapsible";
+@import "components/chips";
+@import "components/materialbox";
+@import "components/forms/forms";
+@import "components/table_of_contents";
+@import "components/sidenav";
+@import "components/preloader";
+@import "components/slider";
+@import "components/carousel";
+@import "components/tapTarget";
+@import "components/pulse";
+@import "components/datepicker";
+@import "components/timepicker";
+
+html, body {
+    width: 100%;
+    margin: 0;
+}
+
+.navContainer {
+    width: 100%;
+    height: 6em;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0 0 2em 0;
+
+    a {
+        margin: 0 1em 0 1em;
+    }
+}
+
+.infoContainer {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    height: 5em;
+    font-size: 1.2em;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.errText {
+    color: rgb(194, 1, 1);
+}
+
+th {
+    padding: 0.3em;
+    border: 1px solid #212121;
+}
+
+td {
+    padding: 0.3em;
+    border: 1px solid rgba(0, 0, 0, 0.12);
+    border-collapse: collapse;
+}
+
+.centerItem {
+    display: flex;
+    justify-content: center;
+}
+
+.notifHolder {
+    position: relative;
+
+    .notifContent {
+        position: absolute;
+        left: 50%;
+        top: 5em;
+        transform: translateX(-50%);
+        padding: 1em;
+        z-index: 999;
+        border-radius: 3px;
+        color: white;
+        width: 30em;
+    }
+}

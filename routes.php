@@ -9,5 +9,5 @@ $router->define([
     '/user' => 'controllers/user-data.php',
     '/user_list' => 'controllers/user-list.php',
     '/poke' => 'controllers/poke.php',
-    '/user_search' => 'controllers/user-search.php'
+    '/search' => 'controllers/search.php'
 ]);

@@ -9,7 +9,9 @@ new Vue({
             name: '',
             email: ''
         },
-        currentPage: ''
+        currentPage: '',
+        notifShow: false,
+        type: 'users'
     },
     watch: {
         info: function () {
@@ -51,19 +53,24 @@ new Vue({
             }
         },
 
+        toggleNotif: function () {
+            this.notifShow = !this.notifShow;
+        },
+
         fetchSearch: function () {
             const searchInput = new FormData();
             searchInput.append('search', this.search);
             searchInput.append('page', this.currentPage);
+            searchInput.append('type', this.type);
             axios({
                 method: 'post',
-                url: 'user_search',
+                url: 'search',
                 data: searchInput,
                 config: {
                     headers: { 'Content-Type': 'multipart/form-data' }
                 }
             })
-                .then((response) => { this.data = response.data; })
+                .then((response) => { this.data = response.data.data; })
                 .catch(function (response) { console.log('error', response); });
         },
 
@@ -78,7 +85,7 @@ new Vue({
                     headers: { 'Content-Type': 'multipart/form-data' }
                 }
             })
-                .then((response) => { this.data = response.data; })
+                .then((response) => { this.data = response.data.data; })
                 .catch(function (response) { console.log('error', response); });
         }
     },

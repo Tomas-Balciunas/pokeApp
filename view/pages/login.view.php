@@ -37,6 +37,8 @@
             <p class="errText"><?= $val; ?></p>
         <?php endforeach; ?>
     <?php endif; ?>
+
+    <script type="text/javascript" src="view/script/js/bin/materialize.min.js"></script>
 </body>
 
 </html>

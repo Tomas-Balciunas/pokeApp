@@ -16,6 +16,14 @@ class Validation
         return self::$errors;
     }
 
+    public static function updateValidation ($post) {
+        $pw = ['pw1' => $post['updatePasswordNew'], 'pw2' => $post['updatePasswordNewRepeat']];
+        self::lastName($post['updateLastname']);
+        self::email($post['updateEmail']);
+        self::password($pw);
+        return self::$errors;
+    }
+
     public static function name($e)
     {
         $val = preg_match('/^[a-zA-ZąčęėįšųūžĄČĘĖĮŠŲŪŽ]{3,25}$/', $e);

@@ -21,7 +21,6 @@ if (isset($_SESSION['user_id'])) {
     } else {
         $currentPage = 1;
     }
-
     
     $offset = ($currentPage - 1) * $itemsPerPage;
     $results = $task->fetchProfile($id, $offset, $itemsPerPage);
@@ -29,7 +28,7 @@ if (isset($_SESSION['user_id'])) {
     $data['data']['pages']['current'] = $currentPage;
     $data['user'] = $results['user'];
     $data['data']['data'] = $results['pokes'];
-    $data['data']['notifs'] = $task->notifs($id);
+
     echo json_encode($data);
 } else {
     header('Location:/sonaro');

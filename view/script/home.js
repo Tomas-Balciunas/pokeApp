@@ -11,7 +11,10 @@ new Vue({
         },
         currentPage: '',
         notifShow: false,
-        type: 'users'
+        type: 'users',
+        notifications: '',
+        updatedNotif: '',
+        newNotif: false
     },
     watch: {
         info: function () {
@@ -20,6 +23,13 @@ new Vue({
         },
         search: function () {
             this.currentPage = 1;
+        },
+        updatedNotif: function () {
+            const isEqual = (...objects) => objects.every(obj => JSON.stringify(obj) === JSON.stringify(objects[0]));
+            if (!isEqual(this.notifications, this.updatedNotif)) {
+                this.newNotif = true
+                this.notifications = this.updatedNotif
+            }
         }
     },
     methods: {
@@ -55,6 +65,7 @@ new Vue({
 
         toggleNotif: function () {
             this.notifShow = !this.notifShow;
+            this.newNotif = false;
         },
 
         fetchSearch: function () {
@@ -72,6 +83,22 @@ new Vue({
             })
                 .then((response) => { this.data = response.data.data; })
                 .catch(function (response) { console.log('error', response); });
+        },
+
+        fetchNotifs: function () {
+            axios.get('notifications').then((response) => {
+                this.notifications = response.data;
+            }).catch((error) => {
+                console.log(error);
+            })
+        },
+
+        updateNotifs: function () {
+            axios.get('notifications').then((response) => {
+                this.updatedNotif = response.data;
+            }).catch((error) => {
+                console.log(error);
+            })
         },
 
         fetchUsers: function () {
@@ -92,5 +119,7 @@ new Vue({
     created() {
         this.currentPage = 1;
         this.fetchUsers();
+        this.fetchNotifs();
+        this.timer = setInterval(this.updateNotifs, 10000)
     }
 });

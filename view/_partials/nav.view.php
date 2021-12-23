@@ -6,10 +6,11 @@
 
         <template v-if="data">
             <div class="notifHolder col s1">
-                <div @click="toggleNotif" class="btn"><i class="small material-icons left">notifications</i>Notifications</div>
+                <div v-if="newNotif" @click="toggleNotif" class="btn-floating pulse red"><i class="small material-icons left">notifications</i></div>
+                <div v-else @click="toggleNotif" class="btn-floating"><i class="small material-icons left">notifications</i></div>
                 <div class="notifContent z-depth-5 grey darken-4" v-if="notifShow">
                     <p class="center">Recent pokes</p>
-                    <template v-for="e in data.notifs">
+                    <template v-for="e in notifications">
                         <p>User <span class="teal-text text-lighten-2"><b>{{e.from_user_name}}</b></span> has poked you on {{e.time_sent}}</p>
                     </template>
                     <p class="center"><a href="/sonaro/profile">All Pokes</a></h4>

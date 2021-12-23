@@ -26,7 +26,6 @@ if (isset($_SESSION['user_id'], $_POST['page'])) {
     $data['data']['pages']['all'] = $pages;
     $data['data']['pages']['current'] = $currentPage;
     $data['data']['data'] = $task->users($offset, $itemsPerPage);
-    $data['data']['notifs'] = $task->notifs($id);
     echo json_encode($data);
 
 } else {

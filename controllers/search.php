@@ -11,7 +11,7 @@ if (isset($_SESSION['user_id'], $_POST['type'])) {
     $task = new Tasks($connection);
     $rowsRes = $task->rowCountSearch($_POST, $id);
     $rows = $rowsRes['COUNT(*)'];
-    
+
     $itemsPerPage = 5;
     $pages = ceil($rows / $itemsPerPage);
 

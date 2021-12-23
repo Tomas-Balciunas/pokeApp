@@ -36,9 +36,14 @@
                     </div>
                 </form>
 
-                <template v-if="error">
-                    <p class="errText" v-for="e in error">{{e}}</p>
-                </template>
+                <div class="row centerItem">
+                    <div>
+                        <template v-if="error">
+                            <p class="errText" v-for="e in error">{{e}}</p>
+                        </template>
+                    </div>
+                </div>
+
             </div>
 
             <div class="row">

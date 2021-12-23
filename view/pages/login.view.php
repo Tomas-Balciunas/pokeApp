@@ -5,39 +5,85 @@
 <body>
     <?php require "view/_partials/nav.view.php"; ?>
 
-    <?php if (!empty($regInfo)): ?>
-    <div>
-        <h3><?= $regInfo; ?></h3>
+    <div class="container">
+        <?php if (!empty($regInfo)) : ?>
+            <div>
+                <h3><?= $regInfo; ?></h3>
+            </div>
+        <?php endif; ?>
+
+        <div class="row">
+            <form method="POST">
+                <div class="row">
+                    <div class="col s4 input-field offset-s4">
+                        <input id="login" type="text" name="loginName" placeholder="Name">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col s4 input-field offset-s4">
+                        <input id="password" type="password" name="loginPassword" placeholder="Password">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="centerItem">
+                        <button class="btn waves-effect waves-light" type="submit" name="loginBtn">Log in</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <div class="row centerItem">
+            <?php if (!empty($error)) : ?>
+                <div class="logErr">
+                    <p class="errText"><?= $error; ?></p>
+                </div>
+            <?php endif; ?>
+        </div>
+
+        <div class="container centerItem">
+            <form method="POST">
+                <div class="row">
+                    <div class="col">
+                        <input type="text" name="registerName" placeholder="Name">
+                    </div>
+                    <div class="col">
+                        <input type="text" name="registerLastname" placeholder="Last Name">
+                    </div>
+                </div>
+                <div class="row centerItem centerItem">
+                    <div class="col s12">
+                        <input type="text" name="registerEmail" placeholder="Email">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <input type="password" name="registerPassword" placeholder="Password">
+                    </div>
+                    <div class="col">
+                        <input type="password" name="registerPasswordRepeat" placeholder="Repeat password">
+                    </div>
+
+                </div>
+                <div class="row centerItem">
+                    <div>
+                        <button class="btn waves-effect waves-light" type="submit" name="registerBtn">Register</button>
+                    </div>
+                </div>
+
+            </form>
+        </div>
+
+        <div class="row centerItem">
+            <div>
+            <?php if (!empty($validation)) : ?>
+                <?php foreach ($validation as $val) : ?>
+                    <p class="errText"><?= $val; ?></p>
+                <?php endforeach; ?>
+            <?php endif; ?>
+            </div>
+        </div>
+        
     </div>
-    <?php endif; ?>
-    
-    <form method="POST">
-        <input type="text" name="loginName" placeholder="Name">
-        <input type="password" name="loginPassword" placeholder="Password">
-        <input type="submit" name="loginBtn" value="Log in">
-    </form>
-
-    <?php if (!empty($error)): ?>
-    <div class="logErr">
-        <p class="errText"><?= $error; ?></p>
-    </div>
-    <?php endif; ?>
-
-    <form method="POST">
-        <input type="text" name="registerName" placeholder="Name">
-        <input type="text" name="registerLastname" placeholder="Last Name">
-        <input type="text" name="registerEmail" placeholder="Email">
-        <input type="password" name="registerPassword" placeholder="Password">
-        <input type="password" name="registerPasswordRepeat" placeholder="Repeat password">
-        <input type="submit" name="registerBtn" value="Register">
-    </form>
-
-    <?php if (!empty($validation)): ?>
-        <?php foreach($validation as $val): ?>
-            <p class="errText"><?= $val; ?></p>
-        <?php endforeach; ?>
-    <?php endif; ?>
-
     <script type="text/javascript" src="view/script/js/bin/materialize.min.js"></script>
 </body>
 

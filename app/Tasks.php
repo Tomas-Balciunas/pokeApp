@@ -266,7 +266,7 @@ class Tasks
 
     private function pokeEmail($sender)
     {
-        $config = false; //file_exists('config.ini');
+        $config = file_exists('config.ini');
         if ($config) {
             $credentials = parse_ini_file('config.ini', true);
             $mail = new PHPMailer;

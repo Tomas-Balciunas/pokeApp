@@ -21,6 +21,6 @@
         <a href="/sonaro/logout" class="btn"><i class="small material-icons left">logout</i>Log Out</a>
 
     <?php else : ?>
-        <h4>Welcome to the poke app, please log in to continue</h4>
+        <h5 class="white-text">Welcome to the poke app, please log in to continue</h5>
     <?php endif; ?>
 </div>

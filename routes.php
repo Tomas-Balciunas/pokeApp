@@ -10,5 +10,6 @@ $router->define([
     '/user_list' => 'controllers/user-list.php',
     '/poke' => 'controllers/poke.php',
     '/search' => 'controllers/search.php',
-    '/notifications' => 'controllers/notifications.php'
+    '/notifications' => 'controllers/notifications.php',
+    '/data' => 'controllers/data-import.php'
 ]);

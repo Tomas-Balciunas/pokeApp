@@ -8,7 +8,7 @@
     <div class="container">
         <?php if (!empty($regInfo)) : ?>
             <div>
-                <h3><?= $regInfo; ?></h3>
+                <h3 class="center"><?= $regInfo; ?></h3>
             </div>
         <?php endif; ?>
 

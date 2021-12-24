@@ -12,7 +12,7 @@ if (isset($_SESSION['user_id'], $_POST['type'])) {
     $rowsRes = $task->rowCountSearch($_POST, $id);
     $rows = $rowsRes['COUNT(*)'];
 
-    $itemsPerPage = 5;
+    $itemsPerPage = 10;
     $pages = ceil($rows / $itemsPerPage);
 
     if (is_numeric($_POST['page'])) {

@@ -24,6 +24,13 @@ class Validation
         return self::$errors;
     }
 
+    public static function importValidation ($name, $lastname, $email) {
+        self::name($name);
+        self::lastName($lastname);
+        self::email($email);
+        return self::$errors;
+    }
+
     public static function name($e)
     {
         $val = preg_match('/^[a-zA-ZąčęėįšųūžĄČĘĖĮŠŲŪŽ]{3,25}$/', $e);
@@ -63,7 +70,7 @@ class Validation
 
     public static function password($e)
     {
-        $val = preg_match('/^(.{6,20})$/', $e['pw1']);
+        $val = preg_match('/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{6,20}$/', $e['pw1']);
 
         if (empty($e['pw1']) or empty($e['pw2'])) {
             Validation::$errors['password'] = 'Both password fields must be filled';

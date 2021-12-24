@@ -3,7 +3,7 @@
 <?php require "view/_partials/head.view.php"; ?>
 
 <body>
-    <div id="profile" v-if="userData">
+    <div id="profile">
         <?php require "view/_partials/nav.view.php"; ?>
         <div class="container">
 
@@ -71,7 +71,7 @@
                 </div>
             </div>
 
-            <div class="row centerItem">
+            <div v-if="data.pages" class="row centerItem">
                 <ul class="pagination">
                     <template v-for="index in data.pages.all">
                         <li v-if="currentPage == index" class="active" @click="switchPage(data.pages.current, index)"><a href="#!">{{index}}</a></li>

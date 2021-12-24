@@ -6,6 +6,7 @@ use PDO;
 use PDOException;
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
+use sonaro\Validation;
 
 class Tasks
 {
@@ -17,7 +18,6 @@ class Tasks
     private $email;
     private $password;
     private $passwordNew;
-
     private $info;
 
     public function __construct($pdo)
@@ -40,12 +40,7 @@ class Tasks
     private function registerExec()
     {
         try {
-            $check = $this->pdo->prepare("SELECT COUNT(*) FROM sonaro.users WHERE name = :name OR email = :email");
-            $check->bindParam(':name', $this->name, PDO::PARAM_STR);
-            $check->bindParam(':email', $this->email, PDO::PARAM_STR);
-            $check->execute();
-
-            if ($check->fetchColumn()) {
+            if ($this->check($this->name, $this->email)) {
                 $this->info = 'User with this name or email already exists';
             } else {
                 $query = "INSERT INTO sonaro.users (name, last_name, email, password) VALUES (:name, :last_name, :email, :password)";
@@ -385,5 +380,75 @@ class Tasks
         } catch (PDOException $msg) {
             throw $msg;
         }
+    }
+
+    //------------------------------------------------------------- IMPORT ---------------------------------------------------------
+
+    public function import()
+    {
+        $fileName = $_FILES['csv']['tmp_name'];
+        $ext = pathinfo($_FILES['csv']['name'], PATHINFO_EXTENSION);
+        if ($ext == 'csv') {
+            if ($_FILES['csv']['size'] > 0) {
+                $file = fopen($fileName, 'r');
+                $count = 0;
+                $skipped = 0;
+                $query = "INSERT INTO sonaro.users (name, last_name, email, password) VALUES (:name, :lastname, :email, :password)";
+
+                while (($line = fgetcsv($file)) !== false) {
+                    $exists = $this->check($line[0], $line[2]);
+                    $validation = Validation::importValidation($line[0], $line[1], $line[2]);
+                    if (!$exists && empty(implode('', $validation))) {
+                        $generate = $this->generatePw();
+                        $pw = password_hash($generate, PASSWORD_DEFAULT);
+                        $prepare = $this->pdo->prepare($query);
+                        $prepare->bindParam(':name', $line[0], PDO::PARAM_STR);
+                        $prepare->bindParam(':lastname', $line[1], PDO::PARAM_STR);
+                        $prepare->bindParam(':email', $line[2], PDO::PARAM_STR);
+                        $prepare->bindParam(':password', $pw, PDO::PARAM_STR);
+                        $prepare->execute();
+                        $count++;
+                    } else {
+                        $skipped++;
+                    }
+                }
+
+                fclose($file);
+                $this->info = $count.' user(s) imported! '. $skipped . ' user(s) skipped due to failing validation or already existing names and emails';
+                return $this->info;
+            } else {
+                $this->info = 'File is empty!';
+                return $this->info;
+            }
+        } else {
+            $this->info = 'Only .csv file type is accepted';
+            return $this->info;
+        }
+    }
+
+
+    private function check($name, $email)
+    {
+        try {
+            $check = $this->pdo->prepare("SELECT COUNT(*) FROM sonaro.users WHERE name = :name OR email = :email");
+            $check->bindParam(':name', $name, PDO::PARAM_STR);
+            $check->bindParam(':email', $email, PDO::PARAM_STR);
+            $check->execute();
+            return $check->fetchColumn();
+        } catch (PDOException $msg) {
+            throw $msg;
+        }
+    }
+
+    private function generatePw()
+    {
+        $pool = "abcdefghijklmnopqrstuwxyzABCDEFGHIJKLMNOPQRSTUWXYZ0123456789";
+        $pw = '';
+        $max = strlen($pool) - 1;
+        for ($i = 0; $i < 10; ++$i) {
+            $pw .= $pool[random_int(0, $max)];
+        }
+
+        return $pw;
     }
 }

@@ -1,13 +1,13 @@
 <?php session_start();
 
 use sonaro\DB;
-use sonaro\Tasks;
+use sonaro\Poke;
 
 if (isset($_SESSION['user_id']) && !empty($_POST)) {
     $info = '';
     $id = $_SESSION['user_id'];
     $connection = DB::connect();
-    $task = new Tasks($connection);
+    $task = new Poke($connection);
 
     if ($id == $_POST['id']) {
         $info = 'You cannot poke yourself!';

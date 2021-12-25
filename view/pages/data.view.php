@@ -6,6 +6,13 @@
     <div id="data">
         <?php require "view/_partials/nav.view.php"; ?>
         <div class="container">
+
+            <div class="row centerItem">
+                <?php if (!empty($info)) : ?>
+                    <p><?= $info; ?></p>
+                <?php endif; ?>
+            </div>
+
             <div class="row">
                 <h5 class="center">Import users from a .csv file</h5>
             </div>
@@ -15,11 +22,7 @@
                     <input class="btn" type="submit" name="import" value="Import Data">
                 </form>
             </div>
-            <div class="row centerItem">
-                <?php if (!empty($info)) : ?>
-                    <p><?= $info; ?></p>
-                <?php endif; ?>
-            </div>
+
             <div class="row">
                 <h5 class="center">Import pokes from a .json file</h5>
             </div>
@@ -28,11 +31,6 @@
                     <input class="btn" type="file" name="json" accept=".json">
                     <input class="btn" type="submit" name="importPokes" value="Import Data">
                 </form>
-            </div>
-            <div class="row centerItem">
-                <?php if (!empty($info)) : ?>
-                    <p><?= $info; ?></p>
-                <?php endif; ?>
             </div>
 
             <div class="row centerItem">

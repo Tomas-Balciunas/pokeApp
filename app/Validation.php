@@ -77,7 +77,7 @@ class Validation
         } elseif ($e['pw1'] !== $e['pw2']) {
             Validation::$errors['password'] = 'Passwords do not match';
         } elseif (!$val) {
-            Validation::$errors['password'] = 'Password must contain from 6 to 20 symbols';
+            Validation::$errors['password'] = 'Password must contain from 6 to 20 symbols, at least one uppercase letter and one number';
         } else {
             Validation::$errors['password'] = '';
         }

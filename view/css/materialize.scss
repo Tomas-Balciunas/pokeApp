@@ -121,3 +121,54 @@ input[type=file]::file-selector-button, input[type=file]::-webkit-file-upload-bu
         width: 30em;
     }
 }
+
+.progressCont {
+    position: relative;
+    width: 100%;
+    min-height: 4px;
+    
+    .progress {
+        position: absolute;
+        left: 0;
+        top: 0;
+    }
+}
+
+.btnSet {
+    display: flex;
+}
+
+@media (max-width: 575px) {
+    .navContainer {
+        width: 100%;
+        height: fit-content;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin: 0 0 2em 0;
+        padding: 0.5em 0 0.5em 0;
+        flex-direction: column;
+
+        .btnSet {
+            width: 100%;
+            justify-content: center;
+            margin: 0.5em 0 0.5em 0;
+        }
+
+        h5 {
+            font-size: 1.2em;
+        }
+    }
+    
+    .notifHolder {
+    
+        .notifContent {
+            top: 5em;
+            padding: 0.5em;
+            z-index: 999;
+            border-radius: 3px;
+            color: white;
+            width: 22em;
+        }
+    }
+}

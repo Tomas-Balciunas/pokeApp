@@ -5,10 +5,17 @@
 <body>
     <div id="app">
         <?php require "view/_partials/nav.view.php"; ?>
+
+        <div class="progressCont">
+            <div v-if="loading" class="progress">
+                <div class="indeterminate"></div>
+            </div>
+        </div>
+
         <div class="container">
 
-            <div class="row">
-                <div class="input-field col s4 offset-s4">
+            <div class="row centerItem">
+                <div class="input-field">
                     <i class="material-icons prefix">search</i>
                     <input id="searchUsers" type="text" v-model="search" @keyup="fetchSearch()">
                     <label for="searchUsers">Search Users</label>
@@ -16,7 +23,7 @@
             </div>
 
             <div class="row">
-                <table class="table highlight">
+                <table class="table highlight responsive-table">
                     <tr class="grey darken-4 white-text">
                         <th>Name</th>
                         <th>Last Name</th>

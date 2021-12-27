@@ -75,7 +75,7 @@ class Import extends Tasks
 
                     if (!empty($exists['sender']) && !empty($exists['receiver'])) {
                         try {
-                            $query = "INSERT INTO sonaro.pokes (from_user, from_user_name, to_user, time_sent) VALUES (:sender, :name, :receiver, :time )";
+                            $query = "INSERT INTO sonaro.pokes (from_user, from_user_name, to_user, time_sent) VALUES (:sender, :name, :receiver, :time)";
                             $query = $this->pdo->prepare($query);
                             $query->bindParam(':sender', $exists['sender']['id'], PDO::PARAM_INT);
                             $query->bindParam(':name', $poke['name_from'], PDO::PARAM_STR);

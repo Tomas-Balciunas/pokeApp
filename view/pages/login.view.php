@@ -15,12 +15,12 @@
         <div class="row">
             <form method="POST">
                 <div class="row">
-                    <div class="col s4 input-field offset-s4">
+                    <div class="col l6 s12 input-field offset-l3">
                         <input id="login" type="text" name="loginName" placeholder="Name">
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col s4 input-field offset-s4">
+                    <div class="col l6 s12 input-field offset-l3">
                         <input id="password" type="password" name="loginPassword" placeholder="Password">
                     </div>
                 </div>
@@ -43,10 +43,10 @@
         <div class="container centerItem">
             <form method="POST">
                 <div class="row">
-                    <div class="col">
+                    <div class="col l6 s6">
                         <input type="text" name="registerName" placeholder="Name">
                     </div>
-                    <div class="col">
+                    <div class="col l6 s6">
                         <input type="text" name="registerLastname" placeholder="Last Name">
                     </div>
                 </div>
@@ -56,10 +56,10 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col">
+                    <div class="col l6 s12">
                         <input type="password" name="registerPassword" placeholder="Password">
                     </div>
-                    <div class="col">
+                    <div class="col l6 s12">
                         <input type="password" name="registerPasswordRepeat" placeholder="Repeat password">
                     </div>
 

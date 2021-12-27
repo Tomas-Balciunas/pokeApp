@@ -1,7 +1,7 @@
 new Vue({
     el: '#data',
     data: {
-        
+        loading: false,
         notifShow: false,
         notifications: '',
         updatedNotif: '',

@@ -5,11 +5,18 @@
 <body>
     <div id="data">
         <?php require "view/_partials/nav.view.php"; ?>
+
+        <div class="progressCont">
+            <div v-if="loading" class="progress">
+                <div class="indeterminate"></div>
+            </div>
+        </div>
+
         <div class="container">
 
             <div class="row centerItem">
                 <?php if (!empty($info)) : ?>
-                    <p><?= $info; ?></p>
+                    <h6 class="text purple-text text-lighten-2"><?= $info; ?></h6>
                 <?php endif; ?>
             </div>
 

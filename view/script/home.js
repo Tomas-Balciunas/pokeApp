@@ -14,7 +14,8 @@ new Vue({
         type: 'users',
         notifications: '',
         updatedNotif: '',
-        newNotif: false
+        newNotif: false,
+        loading: false
     },
     watch: {
         info: function () {
@@ -30,10 +31,14 @@ new Vue({
                 this.newNotif = true
                 this.notifications = this.updatedNotif
             }
+        },
+        data: function () {
+            this.loading = false;
         }
     },
     methods: {
         pokeUser: function (e) {
+            this.loading = true;
             this.poke.id = e.id;
             this.poke.name = e.name;
             this.poke.email = e.email;
@@ -53,6 +58,7 @@ new Vue({
                 .then((data) => { this.info = data.data })
                 .then(setTimeout(() => this.search == '' ? this.fetchUsers() : this.fetchSearch(), 100))
                 .catch(function (response) { console.log('error', response); });
+            
         },
 
         switchPage: function (current, index) {

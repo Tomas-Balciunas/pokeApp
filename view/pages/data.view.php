@@ -16,7 +16,7 @@
 
             <div class="row centerItem">
                 <?php if (!empty($info)) : ?>
-                    <h6 class="text purple-text text-lighten-2"><?= $info; ?></h6>
+                    <h6 v-model="info" class="text purple-text text-lighten-2"><?= $info; ?></h6>
                 <?php endif; ?>
             </div>
 
@@ -26,7 +26,7 @@
             <div class="row centerItem">
                 <form method="post" enctype="multipart/form-data">
                     <input class="btn" type="file" name="csv" accept=".csv">
-                    <input class="btn" type="submit" name="import" value="Import Data">
+                    <input class="btn" type="submit" @click="loadingNotif()" name="import" value="Import Data">
                 </form>
             </div>
 
@@ -36,7 +36,7 @@
             <div class="row centerItem">
                 <form method="post" enctype="multipart/form-data">
                     <input class="btn" type="file" name="json" accept=".json">
-                    <input class="btn" type="submit" name="importPokes" value="Import Data">
+                    <input class="btn" type="submit" @click="loadingNotif()" name="importPokes" value="Import Data">
                 </form>
             </div>
 

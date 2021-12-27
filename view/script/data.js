@@ -5,7 +5,8 @@ new Vue({
         notifShow: false,
         notifications: '',
         updatedNotif: '',
-        newNotif: false
+        newNotif: false,
+        info: ''
     },
     watch: {
         updatedNotif: function () {
@@ -14,6 +15,9 @@ new Vue({
                 this.newNotif = true
                 this.notifications = this.updatedNotif
             }
+        },
+        info: function () {
+            this.loading = false;
         }
     },
     methods: {
@@ -36,6 +40,9 @@ new Vue({
                 console.log(error);
             })
         },
+        loadingNotif: function () {
+            this.loading = true;
+        }
     },
     created() {
         this.fetchNotifs();

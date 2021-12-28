@@ -3137,9 +3137,9 @@ td { padding: 0.3em; border: 1px solid rgba(0, 0, 0, 0.12); border-collapse: col
 
 .centerItem { display: -webkit-box; display: -ms-flexbox; display: flex; -webkit-box-pack: center; -ms-flex-pack: center; justify-content: center; }
 
-input[type=file] { padding: 0; margin: 0; }
+input[type=file] { padding: 0 0.5em 0 0.5em; margin: 0; }
 
-input[type=file]::file-selector-button, input[type=file]::-webkit-file-upload-button { position: relative; background-color: #ee6e73; border: none; border-radius: 2px; color: white; padding: 0.4em 0.8em 0.4em 0.8em; height: 100%; left: 0; }
+input[type=file]::file-selector-button, input[type=file]::-webkit-file-upload-button { -webkit-appearance: none; appearance: none; display: none; }
 
 .notifHolder { position: relative; }
 

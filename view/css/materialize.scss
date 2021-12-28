@@ -91,19 +91,13 @@ td {
 }
 
 input[type=file] {
-    padding: 0;
+    padding: 0 0.5em 0 0.5em;
     margin: 0;
 }
 
 input[type=file]::file-selector-button, input[type=file]::-webkit-file-upload-button {
-    position: relative;
-    background-color: #ee6e73;
-    border: none;
-    border-radius: 2px;
-    color: white;
-    padding: 0.4em 0.8em 0.4em 0.8em;
-    height: 100%;
-    left: 0;
+    appearance: none;
+    display: none;
 }
 
 .notifHolder {

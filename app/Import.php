@@ -58,7 +58,12 @@ class Import extends Tasks
 
     public function importPokes()
     {
-        $file = file_get_contents($_FILES['json']['tmp_name']);
+        if (!empty($_FILES['json']['tmp_name'])) {
+            $file = file_get_contents($_FILES['json']['tmp_name']);
+        } else {
+            $this->info = 'No file selected!';
+            return $this->info;
+        }
         $ext = pathinfo($_FILES['json']['name'], PATHINFO_EXTENSION);
         if ($ext == 'json') {
             if ($_FILES['json']['size'] > 0) {

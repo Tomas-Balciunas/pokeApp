@@ -239,33 +239,6 @@ class Tasks
         }
     }
 
-    //------------------------------------------------------------- SEARCH ---------------------------------------------------------
-
-    public function search($post, $offset, $itemsPerPage, $id)
-    {
-        $this->search = htmlspecialchars(strip_tags($post['search'] . '%'));
-
-        try {
-            switch ($post['type']) {
-                case 'users':
-                    $query = "SELECT id, name, last_name, email, pokes FROM sonaro.users WHERE name LIKE :search LIMIT :offset, :perPage";
-                    break;
-                case 'pokes':
-                    $query = "SELECT pokes.time_sent, users.name FROM sonaro.users INNER JOIN sonaro.pokes ON pokes.from_user = users.id AND to_user = $id WHERE from_user_name LIKE :search LIMIT :offset, :perPage";
-                    break;
-            };
-
-            $stmt = $this->pdo->prepare($query);
-            $stmt->bindParam(':search', $this->search, PDO::PARAM_STR);
-            $stmt->bindParam(':offset', $offset, PDO::PARAM_INT);
-            $stmt->bindParam(':perPage', $itemsPerPage, PDO::PARAM_INT);
-            $stmt->execute();
-            return $stmt->fetchAll(PDO::FETCH_ASSOC);
-        } catch (PDOException $msg) {
-            throw $msg;
-        }
-    }
-
     //------------------------------------------------------------- PAGINATION ---------------------------------------------------------
 
     public function rowCount()

@@ -16,7 +16,7 @@
             <form method="POST">
                 <div class="row">
                     <div class="col l6 s12 input-field offset-l3">
-                        <input id="login" type="text" name="loginName" placeholder="Name">
+                        <input id="login" type="text" name="loginName" placeholder="Name" value="<?php echo isset($filledData['loginName']) ? $filledData['loginName'] : ''; ?>">
                     </div>
                 </div>
                 <div class="row">
@@ -44,15 +44,15 @@
             <form method="POST">
                 <div class="row">
                     <div class="col l6 s6">
-                        <input type="text" name="registerName" placeholder="Name">
+                        <input type="text" name="registerName" placeholder="Name" value="<?php echo isset($filledData['registerName']) ? $filledData['registerName'] : ''; ?>">
                     </div>
                     <div class="col l6 s6">
-                        <input type="text" name="registerLastname" placeholder="Last Name">
+                        <input type="text" name="registerLastname" placeholder="Last Name" value="<?php echo isset($filledData['registerLastname']) ? $filledData['registerLastname'] : ''; ?>">
                     </div>
                 </div>
                 <div class="row centerItem centerItem">
                     <div class="col s12">
-                        <input type="text" name="registerEmail" placeholder="Email">
+                        <input type="text" name="registerEmail" placeholder="Email" value="<?php echo isset($filledData['registerEmail']) ? $filledData['registerEmail'] : ''; ?>">
                     </div>
                 </div>
                 <div class="row">

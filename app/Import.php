@@ -21,7 +21,7 @@ class Import extends Tasks
                 $query = "INSERT INTO sonaro.users (name, last_name, email, password) VALUES (:name, :lastname, :email, :password)";
 
                 while (($line = fgetcsv($file)) !== false) {
-                    $exists = $this->check($line[0], $line[2]);
+                    $exists = $this->checkUserExists($line[0], $line[2]);
                     $validation = Validation::importValidation($line[0], $line[1], $line[2]);
                     if (!$exists && empty(implode('', $validation))) {
                         $generate = $this->generatePw();

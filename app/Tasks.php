@@ -22,7 +22,7 @@ class Tasks
         $this->pdo = $pdo;
     }
 
-    protected function check($name, $email)
+    protected function checkUserExists($name, $email)
     {
         try {
             $check = $this->pdo->prepare("SELECT COUNT(*) FROM sonaro.users WHERE name = :name OR email = :email");
@@ -50,7 +50,7 @@ class Tasks
     private function registerExec()
     {
         try {
-            if ($this->check($this->name, $this->email)) {
+            if ($this->checkUserExists($this->name, $this->email)) {
                 $this->info = 'User with this name or email already exists';
             } else {
                 $query = "INSERT INTO sonaro.users (name, last_name, email, password) VALUES (:name, :last_name, :email, :password)";
@@ -108,11 +108,18 @@ class Tasks
 
     //------------------------------------------------------------- USER LIST ---------------------------------------------------------
 
-    public function users($offset, $itemsPerPage)
+    public function users($post, $offset, $itemsPerPage)
     {
-        try {
+        if (isset($post['search'])) {
+            $this->search = htmlspecialchars(strip_tags($post['search'] . '%'));
+            $query = "SELECT id, name, last_name, email, pokes FROM sonaro.users WHERE name LIKE :search LIMIT :offset, :perPage";
+        } else {
             $query = "SELECT id, name, last_name, email, pokes FROM sonaro.users LIMIT :offset, :perPage";
+        }
+        try {
+            
             $stmt = $this->pdo->prepare($query);
+            $stmt->bindParam(':search', $this->search, PDO::PARAM_STR);
             $stmt->bindParam(':offset', $offset, PDO::PARAM_INT);
             $stmt->bindParam(':perPage', $itemsPerPage, PDO::PARAM_INT);
             $stmt->execute();
@@ -127,7 +134,7 @@ class Tasks
     public function notifs($id)
     {
         try {
-            $query = "SELECT from_user_name, time_sent FROM sonaro.pokes WHERE to_user = :id ORDER BY time_sent DESC LIMIT 5";
+            $query = "SELECT pokes.time_sent, users.name FROM sonaro.users INNER JOIN sonaro.pokes ON pokes.from_user = users.id AND to_user = :id ORDER BY time_sent DESC LIMIT 5";
             $stmt = $this->pdo->prepare($query);
             $stmt->bindParam(':id', $id, PDO::PARAM_INT);
             $stmt->execute();
@@ -139,14 +146,12 @@ class Tasks
 
     //------------------------------------------------------------- PROFILE ---------------------------------------------------------
 
-    public function fetchProfile($id, $offset, $itemsPerPage)
+    public function fetchProfile($post, $id, $offset, $itemsPerPage)
     {
         $this->id = $id;
-        return $this->execFetchProfile($offset, $itemsPerPage);
-    }
-
-    private function execFetchProfile($offset, $itemsPerPage)
-    {
+        if (!empty($_POST['search'])) {
+            $this->search = htmlspecialchars(strip_tags($post['search'] . '%'));
+        }
         $data = [];
 
         try {
@@ -156,8 +161,16 @@ class Tasks
             $stmt->execute();
             $data['user'] = $stmt->fetch(PDO::FETCH_ASSOC);
 
-            $query = "SELECT from_user_name, time_sent FROM sonaro.pokes WHERE to_user = :id LIMIT :offset, :perPage";
-            $stmt = $this->pdo->prepare($query);
+            if (!empty($post['search'])) {
+                $query2 = "SELECT pokes.time_sent, users.name FROM sonaro.users INNER JOIN sonaro.pokes ON pokes.from_user = users.id AND to_user = :id WHERE users.name LIKE :search LIMIT :offset, :perPage";
+                $stmt = $this->pdo->prepare($query2);
+                $stmt->bindParam(':search', $this->search, PDO::PARAM_STR);
+            } else {
+                $query2 = "SELECT pokes.time_sent, users.name FROM sonaro.users INNER JOIN sonaro.pokes ON pokes.from_user = users.id AND to_user = :id LIMIT :offset, :perPage";
+                $stmt = $this->pdo->prepare($query2);
+                
+            }
+            
             $stmt->bindParam(':id', $this->id, PDO::PARAM_INT);
             $stmt->bindParam(':offset', $offset, PDO::PARAM_INT);
             $stmt->bindParam(':perPage', $itemsPerPage, PDO::PARAM_INT);
@@ -231,18 +244,14 @@ class Tasks
     public function search($post, $offset, $itemsPerPage, $id)
     {
         $this->search = htmlspecialchars(strip_tags($post['search'] . '%'));
-        return $this->searchExec($post, $offset, $itemsPerPage, $id);
-    }
 
-    private function searchExec($post, $offset, $itemsPerPage, $id)
-    {
         try {
             switch ($post['type']) {
                 case 'users':
                     $query = "SELECT id, name, last_name, email, pokes FROM sonaro.users WHERE name LIKE :search LIMIT :offset, :perPage";
                     break;
                 case 'pokes':
-                    $query = "SELECT from_user_name, time_sent FROM sonaro.pokes WHERE from_user_name LIKE :search AND to_user = $id LIMIT :offset, :perPage";
+                    $query = "SELECT pokes.time_sent, users.name FROM sonaro.users INNER JOIN sonaro.pokes ON pokes.from_user = users.id AND to_user = $id WHERE from_user_name LIKE :search LIMIT :offset, :perPage";
                     break;
             };
 
@@ -271,26 +280,12 @@ class Tasks
         }
     }
 
-    public function rowCountSearch($post, $id)
-    {
-        $this->search = htmlspecialchars(strip_tags($post['search'] . '%'));
-        return $this->rowCountSearchExec($post, $id);
-    }
-
-    private function rowCountSearchExec($post, $id)
+    public function rowCountPokes($id)
     {
         try {
-            switch ($post['type']) {
-                case 'users':
-                    $query = "SELECT COUNT(*) FROM sonaro.users WHERE name LIKE :search";
-                    break;
-                case 'pokes':
-                    $query = "SELECT COUNT(*) FROM sonaro.pokes WHERE to_user = $id AND from_user_name LIKE :search";
-                    break;
-            };
-
+            $query = "SELECT COUNT(*) FROM sonaro.pokes WHERE to_user = :id";
             $stmt = $this->pdo->prepare($query);
-            $stmt->bindParam(':search', $this->search, PDO::PARAM_STR);
+            $stmt->bindParam(':id', $id, PDO::PARAM_INT);
             $stmt->execute();
             return $stmt->fetch(PDO::FETCH_ASSOC);
         } catch (PDOException $msg) {
@@ -298,12 +293,22 @@ class Tasks
         }
     }
 
-    public function rowCountPokes($id)
+    public function rowCountSearch($post, $id)
     {
+        $this->search = htmlspecialchars(strip_tags($post['search'] . '%'));
+
         try {
-            $query = "SELECT COUNT(*) FROM sonaro.pokes WHERE to_user = :id";
+            switch ($post['type']) {
+                case 'users':
+                    $query = "SELECT COUNT(*) FROM sonaro.users WHERE name LIKE :search";
+                    break;
+                case 'pokes':
+                    $query = "SELECT COUNT(*) FROM sonaro.users INNER JOIN sonaro.pokes ON pokes.from_user = users.id AND to_user = $id WHERE users.name LIKE :search";
+                    break;
+            };
+
             $stmt = $this->pdo->prepare($query);
-            $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+            $stmt->bindParam(':search', $this->search, PDO::PARAM_STR);
             $stmt->execute();
             return $stmt->fetch(PDO::FETCH_ASSOC);
         } catch (PDOException $msg) {

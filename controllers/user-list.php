@@ -11,7 +11,12 @@ if (isset($_SESSION['user_id'], $_POST['page'])) {
     $task = new Tasks($connection);
     $data = [];
 
-    $rowsRes = $task->rowCount();
+    if (!empty($_POST['search'])) {
+        $rowsRes = $task->rowCountSearch($_POST, $id);
+    } else {
+        $rowsRes = $task->rowCount();
+    }
+    
     $rows = $rowsRes['COUNT(*)'];
     $itemsPerPage = 10;
     $pages = ceil($rows / $itemsPerPage);
@@ -25,7 +30,7 @@ if (isset($_SESSION['user_id'], $_POST['page'])) {
     $offset = ($currentPage - 1) * $itemsPerPage;
     $data['data']['pages']['all'] = $pages;
     $data['data']['pages']['current'] = $currentPage;
-    $data['data']['data'] = $task->users($offset, $itemsPerPage);
+    $data['data']['data'] = $task->users($_POST, $offset, $itemsPerPage);
     echo json_encode($data);
 
 } else {

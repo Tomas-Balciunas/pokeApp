@@ -9,6 +9,7 @@ if (isset($_SESSION['user_id'])) {
 } else {
     $regInfo = '';
     $error = '';
+    $filledData = '';
     $connection = DB::connect();
     $task = new Tasks($connection);
 
@@ -21,6 +22,10 @@ if (isset($_SESSION['user_id'])) {
 
     if (isset($_POST['loginBtn'])) {
         $error = $task->login($_POST);
+    }
+
+    if (isset($_POST)) {
+        $filledData = $_POST;
     }
 
     require 'view/pages/login.view.php';

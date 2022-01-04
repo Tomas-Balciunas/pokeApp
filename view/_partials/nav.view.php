@@ -14,7 +14,7 @@
                     <div class="notifContent z-depth-5 grey darken-4" v-if="notifShow">
                         <p class="center">Recent pokes</p>
                         <template v-if="notifications" v-for="e in notifications">
-                            <p>User <span class="teal-text text-lighten-2"><b>{{e.from_user_name}}</b></span> has poked you on {{e.time_sent}}</p>
+                            <p>User <span class="teal-text text-lighten-2"><b>{{e.name}}</b></span> has poked you on {{e.time_sent}}</p>
                         </template>
                         <p class="center"><a href="/sonaro/profile">All Pokes</a></p>
                     </div>

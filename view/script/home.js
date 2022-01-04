@@ -56,7 +56,7 @@ new Vue({
                 }
             })
                 .then((data) => { this.info = data.data })
-                .then(setTimeout(() => this.search == '' ? this.fetchUsers() : this.fetchSearch(), 100))
+                .then(setTimeout(() => this.fetchUsers(), 100))
                 .catch(function (response) { console.log('error', response); });
             
         },
@@ -64,31 +64,13 @@ new Vue({
         switchPage: function (current, index) {
             if (current != index) {
                 this.currentPage = index;
-                if (this.search == '') this.fetchUsers();
-                if (this.search != '') this.fetchSearch();
+                this.fetchUsers();
             }
         },
 
         toggleNotif: function () {
             this.notifShow = !this.notifShow;
             this.newNotif = false;
-        },
-
-        fetchSearch: function () {
-            const searchInput = new FormData();
-            searchInput.append('search', this.search);
-            searchInput.append('page', this.currentPage);
-            searchInput.append('type', this.type);
-            axios({
-                method: 'post',
-                url: 'search',
-                data: searchInput,
-                config: {
-                    headers: { 'Content-Type': 'multipart/form-data' }
-                }
-            })
-                .then((response) => { this.data = response.data.data; })
-                .catch(function (response) { console.log('error', response); });
         },
 
         fetchNotifs: function () {
@@ -110,6 +92,8 @@ new Vue({
         fetchUsers: function () {
             const pageInput = new FormData();
             pageInput.append('page', this.currentPage);
+            pageInput.append('search', this.search);
+            pageInput.append('type', this.type);
             axios({
                 method: 'post',
                 url: 'user_list',

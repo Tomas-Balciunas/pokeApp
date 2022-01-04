@@ -17,7 +17,7 @@
             <div class="row centerItem">
                 <div class="input-field">
                     <i class="material-icons prefix">search</i>
-                    <input id="searchUsers" type="text" v-model="search" @keyup="fetchSearch()">
+                    <input id="searchUsers" type="text" v-model="search" @keyup="fetchUsers()">
                     <label for="searchUsers">Search Users</label>
                 </div>
             </div>

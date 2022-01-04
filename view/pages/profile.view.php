@@ -49,7 +49,7 @@
             <div class="row centerItem">
                 <div class="input-field">
                     <i class="material-icons prefix">search</i>
-                    <input id="searchUsers" type="text" v-model="search" @keyup="fetchSearch()">
+                    <input id="searchUsers" type="text" v-model="search" @keyup="fetchUser()">
                     <label for="searchUsers">Search Pokes</label>
                 </div>
             </div>
@@ -62,7 +62,7 @@
                         </tr>
                         <template v-for="e in data.data">
                             <tr>
-                                <td>{{e.from_user_name}}</td>
+                                <td>{{e.name}}</td>
                                 <td class="center">{{e.time_sent}}</td>
                             </tr>
                         </template>

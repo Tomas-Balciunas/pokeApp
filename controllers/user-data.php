@@ -11,7 +11,12 @@ if (isset($_SESSION['user_id'])) {
     $task = new Tasks($connection);
     $data = [];
 
-    $rowsRes = $task->rowCountPokes($id);
+    if (!empty($_POST['search'])) {
+        $rowsRes = $task->rowCountSearch($_POST, $id);
+    } else {
+        $rowsRes = $task->rowCountPokes($id);
+    }
+    
     $rows = $rowsRes['COUNT(*)'];
     $itemsPerPage = 10;
     $pages = ceil($rows / $itemsPerPage);
@@ -23,7 +28,7 @@ if (isset($_SESSION['user_id'])) {
     }
     
     $offset = ($currentPage - 1) * $itemsPerPage;
-    $results = $task->fetchProfile($id, $offset, $itemsPerPage);
+    $results = $task->fetchProfile($_POST, $id, $offset, $itemsPerPage);
     $data['data']['pages']['all'] = $pages;
     $data['data']['pages']['current'] = $currentPage;
     $data['user'] = $results['user'];

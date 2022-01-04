@@ -61,8 +61,7 @@ new Vue({
         switchPage: function (current, index) {
             if (current != index) {
                 this.currentPage = index;
-                if (this.search == '') this.fetchUser();
-                if (this.search != '') this.fetchSearch();
+                this.fetchUser();
             }
         },
 
@@ -82,26 +81,11 @@ new Vue({
             })
         },
 
-        fetchSearch: function () {
-            const searchInput = new FormData();
-            searchInput.append('search', this.search);
-            searchInput.append('page', this.currentPage);
-            searchInput.append('type', this.type);
-            axios({
-                method: 'post',
-                url: 'search',
-                data: searchInput,
-                config: {
-                    headers: { 'Content-Type': 'multipart/form-data' }
-                }
-            })
-                .then((response) => { this.data = response.data.data; })
-                .catch(function (response) { console.log('error', response); });
-        },
-
         fetchUser: function () {
             const pageInput = new FormData();
             pageInput.append('page', this.currentPage);
+            pageInput.append('type', this.type);
+            pageInput.append('search', this.search);
             axios({
                 method: 'post',
                 url: 'user',
